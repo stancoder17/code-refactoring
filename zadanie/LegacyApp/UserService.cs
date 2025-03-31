@@ -6,6 +6,7 @@ namespace LegacyApp
     {
         public bool AddUser(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
         {
+            // Name and email validation
             if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))
             {
                 return false;
@@ -16,15 +17,20 @@ namespace LegacyApp
                 return false;
             }
 
+            
+            // Calculate now and age
             var now = DateTime.Now;
             int age = now.Year - dateOfBirth.Year;
+            // Age--
             if (now.Month < dateOfBirth.Month || (now.Month == dateOfBirth.Month && now.Day < dateOfBirth.Day)) age--;
-
+            
+            // Age validation
             if (age < 21)
             {
                 return false;
             }
 
+            // Creating clientRepository and client objects to get data
             var clientRepository = new ClientRepository();
             var client = clientRepository.GetById(clientId);
 
@@ -37,6 +43,7 @@ namespace LegacyApp
                 LastName = lastName
             };
 
+            // Shitty conassence
             if (client.Type == "VeryImportantClient")
             {
                 user.HasCreditLimit = false;
